@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudtask-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudtask-api
+  template:
+    metadata:
+      labels:
+        app: cloudtask-api
+    spec:
+      containers:
+        - name: cloudtask-api
+          image: cloudtask-api
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: postgresql://postgres:CloudTask%402026@host.docker.internal:5432/cloudtask_ai
