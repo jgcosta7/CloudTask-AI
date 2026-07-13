@@ -14,32 +14,20 @@ app = FastAPI(
 # Cria todas as tabelas cadastradas no projeto
 Base.metadata.create_all(bind=engine)
 
+# Rotas
 app.include_router(user_router)
 app.include_router(task_router)
 
 
-@app.get("/")
+@app.get("/", tags=["Sistema"])
 def home():
     return {
         "mensagem": "Bem-vindo ao CloudTask AI!"
     }
 
 
-@app.get("/status")
+@app.get("/status", tags=["Sistema"])
 def status():
     return {
         "status": "API funcionando"
     }
-
-
-@app.get("/db-test")
-def db_test():
-    try:
-        with engine.connect() as connection:
-            return {
-                "status": "Conectado ao PostgreSQL!"
-            }
-    except Exception as e:
-        return {
-            "erro": str(e)
-        }

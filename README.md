@@ -1,28 +1,28 @@
 # CloudTask-AI
 
-API de gerenciamento de tarefas desenvolvida com **FastAPI**, **PostgreSQL**, **Docker** e **Kubernetes**, com autenticação via **JWT**, CRUD de tarefas, filtro por status e suporte a upload de arquivos.
+API de gerenciamento de tarefas desenvolvida com **FastAPI**, **PostgreSQL**, **Docker** e **Kubernetes**, utilizando autenticação via **JWT**, CRUD completo de tarefas, filtro por status e upload de arquivos.
 
 ---
 
-## Integrantes
+# Integrantes
 
-* João Gabriel RU: 5327853
-* Izabela Xavier RU: 5315281
+- **João Gabriel Costa Fernando** — RU: 5327853
+- **Izabela Xavier** — RU: 5315281
 
 ---
 
-## Objetivo do projeto
+# Objetivo do projeto
 
-O projeto **CloudTask-AI** foi desenvolvido com o objetivo de criar uma API REST para gerenciamento de tarefas, permitindo o cadastro e autenticação de usuários, criação e organização de tarefas e testes de deploy com containers e Kubernetes.
+O **CloudTask-AI** foi desenvolvido como uma API REST para gerenciamento de tarefas, permitindo o cadastro e autenticação de usuários, criação e organização de tarefas, upload de arquivos e implantação da aplicação utilizando Docker e Kubernetes.
 
-A aplicação foi construída com foco em práticas modernas de backend, utilizando:
+A aplicação foi construída utilizando:
 
-* **FastAPI** para criação da API
-* **PostgreSQL** como banco de dados
-* **SQLAlchemy** como ORM
-* **JWT** para autenticação
-* **Docker** para containerização
-* **Kubernetes** para orquestração da aplicação
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- JWT (JSON Web Token)
+- Docker
+- Kubernetes
 
 ---
 
@@ -30,48 +30,52 @@ A aplicação foi construída com foco em práticas modernas de backend, utiliza
 
 ## Usuários
 
-* Cadastro de usuário
-* Login com geração de token JWT
-* Autenticação para acesso às rotas protegidas
+- Cadastro de usuários
+- Login com JWT
+- Consulta do usuário autenticado
+- Atualização de usuário
+- Exclusão de usuário
 
 ## Tarefas
 
-* Criar tarefa
-* Listar tarefas do usuário autenticado
-* Buscar tarefa por ID
-* Atualizar tarefa
-* Excluir tarefa
-* Filtrar tarefas por status
+- Criar tarefa
+- Listar tarefas
+- Buscar tarefa por ID
+- Atualizar tarefa
+- Excluir tarefa
+- Filtrar tarefas por status
 
-## Extras implementados
+## Recursos adicionais
 
-* Campo de **prioridade**
-* Campo de **status**
-* Upload de arquivos
-* Documentação automática via Swagger
+- Upload de arquivos para tarefas
+- Campo de prioridade
+- Campo de status
+- Documentação automática via Swagger
 
 ---
 
 # Tecnologias utilizadas
 
-* Python 3.11
-* FastAPI
-* Uvicorn
-* SQLAlchemy
-* PostgreSQL
-* Pydantic
-* Passlib / bcrypt
-* Python-Jose
-* Docker
-* Docker Compose
-* Kubernetes
-* Git / GitHub
+- Python 3.11
+- FastAPI
+- Uvicorn
+- SQLAlchemy
+- PostgreSQL
+- Pydantic
+- Passlib
+- bcrypt
+- python-jose
+- Docker
+- Docker Compose
+- Kubernetes
+- Git
+- GitHub
 
 ---
 
 # Estrutura do projeto
 
-```bash
+```text
 CloudTask-AI/
 │
 ├── backend/
@@ -88,11 +92,13 @@ CloudTask-AI/
 │   │   ├── api-deployment.yaml
 │   │   └── api-service.yaml
 │   │
+│   ├── uploads/
 │   ├── Dockerfile
 │   ├── docker-compose.yml
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── README.md
 │
-└── README.md
+└── docs/
 ```
 
 ---
@@ -102,18 +108,29 @@ CloudTask-AI/
 ## 1. Clonar o repositório
 
 ```bash
-git clone <chttps://github.com/jgcosta7/CloudTask-AI>
+git clone https://github.com/jgcosta7/CloudTask-AI.git
 cd CloudTask-AI/backend
 ```
 
-## 2. Criar e ativar o ambiente virtual
+---
 
-### Windows (PowerShell)
+## 2. Criar o ambiente virtual
+
+### Windows
 
 ```bash
 python -m venv venv
 .\venv\Scripts\activate
 ```
+
+### Linux
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+---
 
 ## 3. Instalar as dependências
 
@@ -121,93 +138,115 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-## 4. Rodar a aplicação
+---
+
+## 4. Configurar o banco de dados
+
+Crie um banco PostgreSQL chamado:
+
+```
+cloudtask_ai
+```
+
+Configure a conexão no arquivo **app/database.py** ou utilize a variável de ambiente:
+
+```
+DATABASE_URL=postgresql://usuario:senha@localhost:5432/cloudtask_ai
+```
+
+---
+
+## 5. Executar a aplicação
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-## 5. Acessar no navegador
+Na primeira execução, todas as tabelas serão criadas automaticamente pelo SQLAlchemy.
 
-* Swagger: `http://localhost:8000/docs`
+> **Observação:** Caso o banco já exista e o modelo das tabelas seja alterado durante o desenvolvimento, poderá ser necessário recriar a tabela correspondente para atualizar sua estrutura.
 
 ---
 
-# Como executar com Docker
+## 6. Acessar a documentação
 
-## 1. Na pasta `backend`, rodar:
+Swagger:
+
+```
+http://localhost:8000/docs
+```
+
+---
+
+# Executando com Docker
+
+Na pasta **backend**, execute:
 
 ```bash
 docker compose up --build
 ```
 
-## 2. Acessar no navegador
+Depois acesse:
 
-* Swagger: `http://localhost:8000/docs`
+```
+http://localhost:8000/docs
+```
 
 ---
 
-# Como executar com Kubernetes
+# Executando com Kubernetes
 
-## Pré-requisito
+### Pré-requisitos
 
-Ter o **Docker Desktop** instalado com o **Kubernetes habilitado**.
+- Docker Desktop
+- Kubernetes habilitado
 
-## 1. Entrar na pasta do backend
+---
 
-```bash
-cd backend
-```
-
-## 2. Verificar se o Kubernetes está ativo
-
-```bash
-kubectl get nodes
-```
-
-## 3. Aplicar o deployment da API
+Aplicar os manifests:
 
 ```bash
 kubectl apply -f k8s/api-deployment.yaml
+kubectl apply -f k8s/api-service.yaml
 ```
 
-## 4. Verificar se o pod está rodando
+Verificar os pods:
 
 ```bash
 kubectl get pods
 ```
 
-## 5. Aplicar o service
+Verificar os serviços:
 
 ```bash
-kubectl apply -f k8s/api-service.yaml
+kubectl get services
 ```
 
-## 6. Criar o port-forward para acessar a API
+Criar o port-forward:
 
 ```bash
 kubectl port-forward service/cloudtask-api-service 8000:8000
 ```
 
-## 7. Acessar a documentação
+Acessar:
 
-* Swagger: `http://localhost:8000/docs`
+```
+http://localhost:8000/docs
+```
 
 ---
 
 # Autenticação
 
-A autenticação da API é feita via **JWT**.
+Fluxo de utilização:
 
-## Fluxo básico:
+1. Criar um usuário.
+2. Fazer login.
+3. Copiar o token JWT retornado.
+4. Clicar em **Authorize** no Swagger.
+5. Informar:
 
-1. Criar usuário em `/users/`
-2. Fazer login em `/login`
-3. Copiar o token retornado
-4. Clicar em **Authorize** no Swagger
-5. Informar o token no formato:
-
-```bash
+```
 Bearer SEU_TOKEN
 ```
 
@@ -215,27 +254,44 @@ Bearer SEU_TOKEN
 
 # Principais endpoints
 
-## Usuários
+## Sistema
 
-* `POST /users/` → criar usuário
-* `POST /login` → autenticar usuário
-
-## Tarefas
-
-* `GET /tasks/` → listar tarefas
-* `GET /tasks/{task_id}` → buscar tarefa por ID
-* `POST /tasks/` → criar tarefa
-* `PUT /tasks/{task_id}` → atualizar tarefa
-* `DELETE /tasks/{task_id}` → excluir tarefa
-* `GET /tasks/status/{status}` → listar tarefas por status
-
-## Upload
-
-* rota de upload implementada no projeto
+| Método | Endpoint | Descrição |
+|---------|----------|-----------|
+| GET | `/` | Página inicial da API |
+| GET | `/status` | Verifica o funcionamento da API |
 
 ---
 
-# Exemplo de JSON para criar tarefa
+## Usuários
+
+| Método | Endpoint | Descrição |
+|---------|----------|-----------|
+| GET | `/users/` | Listar usuários |
+| POST | `/users/` | Criar usuário |
+| POST | `/users/login` | Realizar login |
+| GET | `/users/me` | Retorna o usuário autenticado |
+| GET | `/users/{user_id}` | Buscar usuário por ID |
+| PUT | `/users/{user_id}` | Atualizar usuário |
+| DELETE | `/users/{user_id}` | Excluir usuário |
+
+---
+
+## Tarefas
+
+| Método | Endpoint | Descrição |
+|---------|----------|-----------|
+| GET | `/tasks/` | Listar tarefas |
+| POST | `/tasks/` | Criar tarefa |
+| GET | `/tasks/status/{status}` | Filtrar tarefas por status |
+| GET | `/tasks/{task_id}` | Buscar tarefa por ID |
+| PUT | `/tasks/{task_id}` | Atualizar tarefa |
+| DELETE | `/tasks/{task_id}` | Excluir tarefa |
+| POST | `/tasks/{task_id}/upload` | Upload de arquivo da tarefa |
+
+---
+
+# Exemplo de criação de tarefa
 
 ```json
 {
@@ -249,7 +305,7 @@ Bearer SEU_TOKEN
 
 ---
 
-# Exemplo de retorno de tarefa
+# Exemplo de resposta
 
 ```json
 {
@@ -259,6 +315,7 @@ Bearer SEU_TOKEN
   "concluida": false,
   "status": "pendente",
   "prioridade": "alta",
+  "arquivo": null,
   "user_id": 1
 }
 ```
@@ -267,19 +324,21 @@ Bearer SEU_TOKEN
 
 # Evidências de funcionamento
 
-Durante o desenvolvimento, foram realizados testes de:
+Foram realizados testes das seguintes funcionalidades:
 
-* cadastro de usuário
-* login com JWT
-* criação de tarefas
-* atualização de tarefas
-* filtro por status
-* execução com Docker
-* execução com Kubernetes
-* acesso à documentação Swagger
+- Cadastro de usuários
+- Login com JWT
+- CRUD completo de tarefas
+- Consulta de tarefas por status
+- Upload de arquivos
+- Documentação Swagger
+- Execução utilizando Docker
+- Execução utilizando Kubernetes
 
 ---
 
 # Considerações finais
 
-O projeto permitiu aplicar conhecimentos de desenvolvimento backend, autenticação, integração com banco de dados, containerização e orquestração com Kubernetes, simulando um ambiente mais próximo de aplicações modernas em nuvem.
+O desenvolvimento do **CloudTask-AI** possibilitou aplicar conceitos de desenvolvimento de APIs REST, autenticação com JWT, persistência de dados utilizando PostgreSQL, containerização com Docker e orquestração com Kubernetes.
+
+O projeto integra tecnologias amplamente utilizadas no mercado e serve como uma base para aplicações modernas voltadas ao gerenciamento de tarefas em ambientes de computação em nuvem.
